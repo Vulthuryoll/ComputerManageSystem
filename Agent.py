@@ -1,10 +1,10 @@
-import psutil
-import platform
-import os
-import time
-import requests
 import json
+import os
+import platform
 import time
+
+import psutil
+import requests
 
 MASTER = '127.0.0.1:10086'
 
@@ -56,12 +56,15 @@ def report_hardware_info():
     info['System Info'] = get_system_info()
     print('Collected!')
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(
+    try:
+        response = requests.post(
         url=MASTER, headers=headers, data=json.dumps(info))
-    if response.status_code == 200:
-        print('Successfully report system info to master node.')
-    else:
-        print('An error occurred when sending system info.')
+        if response.status_code == 200:
+            print('Successfully report system info to master node.')
+        else:
+            print('An error occurred when sending system info.')
+    except:
+        print('Network error! Unable to report system state')
 
 
 if __name__ == '__main__':
