@@ -65,6 +65,8 @@ def report_hardware_info():
             print('An error occurred when sending system info.')
     except:
         print('Network error! Unable to report system state')
+        print('info collected as follows')
+        print(info)
 
 
 if __name__ == '__main__':
