@@ -4,6 +4,7 @@ import os
 import time
 import requests
 import json
+import time
 
 MASTER = '127.0.0.1:10086'
 
@@ -23,6 +24,7 @@ def get_system_info():
 def report_hardware_info():
     print('Collecting Device Info...')
     info = {}
+    info['Time Stamp'] = time.time_ns()
     info['CPU Usage'] = psutil.cpu_percent(interval=2)
     info['Memory Usage'] = f"{psutil.virtual_memory().percent}"
     info['Swap Usage'] = f"{psutil.swap_memory().percent}"
