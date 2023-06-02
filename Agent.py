@@ -18,9 +18,8 @@ def get_system_info():
     system_info['Hostname'] = platform.node()
     return system_info
 
+
 # 报告设备运行状态
-
-
 def report_hardware_info():
     print('Collecting Device Info...')
     info = {}
@@ -52,20 +51,33 @@ def report_hardware_info():
         if stats.isup:
             network_speed += stats.speed * 1024 * 1024
     info['Network Usage'] = f"{round(total_bytes / network_speed * 100, 2)}"
-    info['Package Loss Rate'] = f"{round((network_io_counters2.dropin - network_io_counters1.dropin +network_io_counters2.dropout - network_io_counters1.dropout + network_io_counters2.errout - network_io_counters1.errout)/(network_io_counters2.packets_sent-network_io_counters1.packets_sent), 2)}"
+    if network_io_counters2.packets_sent-network_io_counters1.packets_sent:
+        info['Package Loss Rate'] = f"{round((network_io_counters2.dropin - network_io_counters1.dropin +network_io_counters2.dropout - network_io_counters1.dropout + network_io_counters2.errout - network_io_counters1.errout)/(network_io_counters2.packets_sent-network_io_counters1.packets_sent), 2)}"
+    else:
+        info['Package Loss Rate'] = 0.00
     info['System Info'] = get_system_info()
     print('Collected!')
     headers = {'Content-Type': 'application/json'}
-    try:
-        response = requests.post(
-        url=MASTER, headers=headers, data=json.dumps(info))
-        if response.status_code == 200:
-            print('Successfully report system info to master node.')
-        else:
-            print('An error occurred when sending system info.')
-    except:
-        print('Network error! Unable to report system state')
-        print('info collected as follows')
+    i = 0
+    while i < 11:
+        try:
+            response = requests.post(
+                url=MASTER, headers=headers, data=json.dumps(info))
+            if response.status_code == 200:
+                print('Successfully report system state to master node.')
+                break
+            else:
+                print('An error occurred when sending system state.')
+                print(f'We will try for {10-i} more time(s).')
+                time.sleep(0.5)
+        except:
+            print('Network error! Unable to report system state.')
+            print(f'We will try for {10-i} more time(s).')
+            time.sleep(0.5)
+        i += 1
+    if i > 10:
+        print('Failed to report system state.')
+        print('system state collected as follows:')
         print(info)
 
 
