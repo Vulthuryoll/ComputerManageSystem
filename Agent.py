@@ -21,7 +21,7 @@ def get_system_info():
 
 # 报告设备运行状态
 def report_hardware_info():
-    print('Collecting Device Info...')
+    print('Collecting Infomation...')
     info = {}
     info['Time Stamp'] = time.time_ns()
     info['CPU Usage'] = psutil.cpu_percent(interval=2)
