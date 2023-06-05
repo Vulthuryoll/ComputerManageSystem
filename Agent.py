@@ -6,7 +6,7 @@ import time
 import psutil
 import requests
 
-MASTER = '127.0.0.1:10086'
+MASTER = 'http://127.0.0.1:10086/report'
 
 
 # 获取系统信息
