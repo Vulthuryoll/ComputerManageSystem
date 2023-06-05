@@ -1,12 +1,15 @@
 import json
 import os
 import platform
+import threading
 import time
 
 import psutil
 import requests
+import keyboard
 
 MASTER = 'http://127.0.0.1:10086/report'
+Signal = True
 
 
 # 获取系统信息
@@ -81,5 +84,15 @@ def report_hardware_info():
         print(info)
 
 
+
+def reportHelper():
+    while Signal:
+        report_hardware_info()
+        time.sleep(10)
+
+
 if __name__ == '__main__':
-    report_hardware_info()
+    report_thread=threading.Thread(target=reportHelper).start()
+    keyboard.wait('q')
+    Signal = False
+    print('Agent will stop.')
