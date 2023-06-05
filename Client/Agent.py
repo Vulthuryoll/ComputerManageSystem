@@ -1,10 +1,12 @@
 import json
 import os
 import platform
+import threading
 import time
 
 import psutil
 import requests
+import keyboard
 
 MASTER = 'http://127.0.0.1:10086/report'
 
@@ -81,7 +83,14 @@ def report_hardware_info():
         print(info)
 
 
-if __name__ == '__main__':
+
+def reportHelper():
     while True:
         report_hardware_info()
         time.sleep(10)
+
+
+if __name__ == '__main__':
+    threading.Thread(target=reportHelper).start()
+    while True:
+        pass
