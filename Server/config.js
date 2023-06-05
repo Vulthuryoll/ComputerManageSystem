@@ -3,5 +3,5 @@ exports.MySQLConnectionOption = {
     port: 3306,
     user: 'root',
     password: 'Bajun20020603',
-    database: 'badminton'
+    database: 'status'
 }
