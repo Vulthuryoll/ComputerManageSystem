@@ -82,4 +82,6 @@ def report_hardware_info():
 
 
 if __name__ == '__main__':
-    report_hardware_info()
+    while True:
+        report_hardware_info()
+        time.sleep(10)
