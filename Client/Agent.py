@@ -95,3 +95,4 @@ if __name__ == '__main__':
     report_thread=threading.Thread(target=reportHelper).start()
     keyboard.wait('q')
     Signal = False
+    print('Agent will stop.')
